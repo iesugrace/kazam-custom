@@ -45,6 +45,10 @@ from kazam.frontend.done_recording import DoneRecording
 from kazam.frontend.window_outline import OutlineWindow
 from kazam.frontend.window_countdown import CountdownWindow
 
+# 2015-10-10, Joshua Chen
+# the noise reduction module
+import sox
+
 logger = logging.getLogger("Main")
 
 #
@@ -593,6 +597,14 @@ class KazamApp(GObject.GObject):
             logger.debug("Waiting for data to flush.")
 
     def cb_flush_done(self, widget):
+        """ 2015-10-10, Joshua Chen
+        This method will be called after all buffered data is flushed,
+        we can do the noise reduction work in here, simply call a program
+        in the child process will do.
+
+        In order to make things simple, we do noise reduction only
+        in auto-save-video mode.
+        """
         if self.main_mode == MODE_SCREENCAST and prefs.autosave_video:
             logger.debug("Autosaving enabled.")
             fname = get_next_filename(prefs.autosave_video_dir,
@@ -601,9 +613,15 @@ class KazamApp(GObject.GObject):
 
             shutil.move(self.tempfile, fname)
 
-            self.window.set_sensitive(True)
-            self.window.show()
-            self.window.present()
+            # 2015-10-10, Joshua Chen
+            # remove the noise of the result file
+            #sox.Sox(fname, overwrite=True).clean()
+
+            # 2015-10-10, Joshua Chen
+            # Don't show the window after stop
+            #self.window.set_sensitive(True)
+            #self.window.show()
+            #self.window.present()
         elif self.main_mode == MODE_SCREENCAST:
             self.done_recording = DoneRecording(self.icons,
                                             self.tempfile,

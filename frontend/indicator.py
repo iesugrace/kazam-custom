@@ -97,15 +97,18 @@ class KazamSuperIndicator(GObject.GObject):
             from gi.repository import Keybinder
             logger.debug("Trying to bind hotkeys.")
             Keybinder.init()
-            Keybinder.bind("<Super><Ctrl>R", self.cb_hotkeys, "start-request")
-            Keybinder.bind("<Super><Ctrl>F", self.cb_hotkeys, "stop-request")
-            Keybinder.bind("<Super><Ctrl>P", self.cb_hotkeys, "pause-request")
-            Keybinder.bind("<Super><Ctrl>W", self.cb_hotkeys, "show-request")
-            Keybinder.bind("<Super><Ctrl>Q", self.cb_hotkeys, "quit-request")
+            # 2015-10-10, Joshua Chen
+            # configure the shortcut keys
+            Keybinder.bind("<Ctrl><Shift>F1", self.cb_hotkeys, "start-request")
+            Keybinder.bind("<Ctrl><Shift>F12", self.cb_hotkeys, "stop-request")
+            Keybinder.bind("<Ctrl><Shift>F8", self.cb_hotkeys, "pause-request")
+            #Keybinder.bind("<Ctrl>W", self.cb_hotkeys, "show-request")
+            Keybinder.bind("<Ctrl><Shift>F11", self.cb_hotkeys, "quit-request")
             self.recording = False
         except ImportError:
             logger.info("Unable to import Keybinder, hotkeys not available.")
 
+    # hot key handler
     def cb_hotkeys(self, key, action):
         logger.debug("KEY {0}, ACTION {1}".format(key, action))
         if action == "start-request" and not self.recording:

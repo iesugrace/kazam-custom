@@ -45,6 +45,7 @@ class InstantApp(GObject.GObject):
         prefs.dist = dist
         prefs.get_sound_files()
 
+        # configure the reference
         if preferences:
             logger.debug("Preferences requested.")
             from kazam.frontend.preferences import Preferences
@@ -57,6 +58,7 @@ class InstantApp(GObject.GObject):
             self.preferences_window.connect("prefs-quit", self.cb_prefs_quit)
             self.preferences_window.open()
 
+        # do a screen grab
         else:
             self.old_path = None
 

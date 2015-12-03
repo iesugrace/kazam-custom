@@ -47,7 +47,7 @@ from kazam.frontend.window_countdown import CountdownWindow
 
 # 2015-10-10, Joshua Chen
 # the noise reduction module
-import sox
+# import sox
 
 logger = logging.getLogger("Main")
 
